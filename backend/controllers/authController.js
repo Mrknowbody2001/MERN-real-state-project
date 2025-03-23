@@ -2,6 +2,8 @@ const User = require("../model/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const errorHandler = require("../utils/errorHandler");
+//! signup
+
 module.exports.signup = async (req, res, next) => {
   const { username, email, password } = req.body;
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -24,11 +26,11 @@ module.exports.signin = async (req, res, next) => {
     if (!validPassword)
       return next(errorHandler(400, "Invalid email or password"));
     const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET);
-    const {password:pass, ...rest} = validUser._doc
+    const { password: pass, ...rest } = validUser._doc;
     res
       .cookie("access_token", token, {
         httpOnly: true,
-        expire: Date.now() + 7 * 24 * 60 * 60 * 1000,
+        maxAge: 7 * 24 * 60 * 60 * 1000,
       })
       .status(200)
       .json(rest);
