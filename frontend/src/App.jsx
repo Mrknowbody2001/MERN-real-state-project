@@ -13,17 +13,13 @@ const App = () => {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
-      </Routes>
-      <Routes>
+
         <Route path="/signin" element={<SignIn />} />
-      </Routes>
-      <Routes>
+
         <Route path="/signup" element={<SignUp />} />
-      </Routes>
-      <Routes>
+
         <Route path="/about" element={<About />} />
-      </Routes>
-      <Routes>
+
         <Route path="/profile" element={<Profile />} />
       </Routes>
     </BrowserRouter>

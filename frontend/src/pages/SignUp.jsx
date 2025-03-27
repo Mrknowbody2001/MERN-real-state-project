@@ -1,14 +1,13 @@
 import React from "react";
 import { useState } from "react";
 import { FaBullseye } from "react-icons/fa";
-import { Link , useNavigate} from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({});
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const  navigate = useNavigate();
+  const navigate = useNavigate();
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -78,7 +77,7 @@ const SignUp = () => {
       </form>
       <div className="flex gap-2 mt-5">
         <p>Have an account? </p>
-        <Link to={"/sign-in"}>
+        <Link to={"/signin"}>
           <span className="text-blue-600 ">Sign in </span>
         </Link>
       </div>
