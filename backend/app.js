@@ -1,13 +1,17 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const authRouter = require("./routes/authRouter");
+const userRouter = require("./routes/userRouter");
 const dotenv = require("dotenv");
+const cookieParser = require("cookie-parser");
 //
 require("dotenv").config();
 //
 const app = express();
 //middleware
 app.use(express.json());
+///
+app.use(cookieParser());
 
 // connect to the database
 mongoose
@@ -22,6 +26,7 @@ mongoose
 //route
 // app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/user", userRouter);
 
 //
 app.use((err, req, res, next) => {
@@ -32,8 +37,7 @@ app.use((err, req, res, next) => {
     status: statusCode,
     message,
   });
-})
-
+});
 
 //!start the server
 app.listen(3000, () => {
