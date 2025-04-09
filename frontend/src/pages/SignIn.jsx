@@ -8,7 +8,7 @@ import OAuth from "../components/OAuth";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({});
-  const { error, loading } = useSelector((state) => state.user);
+  const { error, loading, currentUser } = useSelector((state) => state.user);
   // const [error, setError] = useState(null);
   // const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -70,7 +70,7 @@ const SignIn = () => {
         >
           {loading ? "loading.. " : "signin"}
         </button>
-        <OAuth/>
+        <OAuth />
       </form>
       <div className="flex gap-2 mt-5">
         <p>Don't have an account? </p>
