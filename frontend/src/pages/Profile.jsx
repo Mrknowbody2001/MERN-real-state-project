@@ -11,8 +11,12 @@ import {
   updateUserStart,
   updateUserSuccess,
   updateUserFailure,
+  deleteUserStart,
+  deleteUserSuccess,
+  deleteUserFailure,
 } from "../redux/userSlice";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const fileRef = useRef(null);
@@ -22,7 +26,9 @@ const Profile = () => {
   const [fileError, setFileError] = useState(false);
   const [formData, setFormData] = useState({});
   const [updateSuccess, setUpdateSuccess] = useState(false);
+  //!
   const dispatch = useDispatch();
+  const navigate = useNavigate(); //navigate
   console.log(file);
   console.log(filePercent);
   //!
@@ -82,6 +88,25 @@ const Profile = () => {
   };
   const handleChange = (e) => {
     setFormData((prevData) => ({ ...prevData, [e.target.id]: e.target.value }));
+  };
+  const handleDelete = async () => {
+    try {
+      dispatch(deleteUserStart());
+      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(deleteUserFailure(data.message));
+        return;
+      }
+      dispatch(deleteUserSuccess(data));
+      navigate("/signin", {
+        replace: true,
+      });
+    } catch (error) {
+      dispatch(deleteUserFailure(error.message));
+    }
   };
   return (
     //fire base
@@ -146,7 +171,9 @@ const Profile = () => {
         </button>
       </form>
       <div className="flex justify-between mt-5">
-        <span className="text-red-600 cursor-pointer">Delete account</span>
+        <span onClick={handleDelete} className="text-red-600 cursor-pointer">
+          Delete account
+        </span>
         <span className="text-red-600 cursor-pointer">Sign-out</span>
       </div>
 
