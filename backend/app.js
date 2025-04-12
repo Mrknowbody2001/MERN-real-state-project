@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const authRouter = require("./routes/authRouter");
 const userRouter = require("./routes/userRouter");
+const listingRouter = require("./routes/listing");
 const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 //
@@ -27,6 +28,7 @@ mongoose
 // app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
+app.use("/api/listing", listingRouter);
 
 //
 app.use((err, req, res, next) => {
