@@ -38,6 +38,7 @@ module.exports.signin = async (req, res, next) => {
     next(error);
   }
 };
+//! google
 module.exports.google = async (req, res, next) => {
   try {
     const user = await User.findOne({ email: req.body.email });
@@ -77,5 +78,13 @@ module.exports.google = async (req, res, next) => {
     }
   } catch (err) {
     next(err);
+  }
+};
+//! signout
+module.exports.signout = (req, res, next) => {
+  try {
+    res.clearCookie("access_token").status(200).json("User signed out");
+  } catch (error) {
+    next(error);
   }
 };
