@@ -19,7 +19,7 @@ import {
   signOutFailure,
 } from "../redux/userSlice";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const fileRef = useRef(null);
@@ -195,6 +195,9 @@ const Profile = () => {
         >
           {loading ? "loading..." : "update"}
         </button>
+        <Link  className="bg-green-600 text-white text-center p-3 rounded-lg uppercase hover:opacity-95 "to={"/create-listing"} >
+        Create Listing
+        </Link>
       </form>
       <div className="flex justify-between mt-5">
         <span onClick={handleDelete} className="text-red-600 cursor-pointer">
