@@ -48,7 +48,7 @@ module.exports.deleteUser = async (req, res, next) => {
 module.exports.getUserListings = async (req, res, next) => {
   if (req.user.id === req.params.id) {
     try {
-      const listings = await Listing.find({ userId: req.params.id });
+      const listings = await Listing.find({ userRef: req.params.id });
       res.status(200).json(listings);
     } catch (error) {
       next(error);
