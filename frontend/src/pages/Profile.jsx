@@ -73,12 +73,17 @@ const Profile = () => {
     e.preventDefault();
     try {
       dispatch(updateUserStart());
+      // Ensure avatar is set — use existing one if not changed
+      const updatedData = {
+        ...formData,
+        avatar: formData.avatar || currentUser.avatar,
+      };
       const res = await fetch(`/api/user/update/${currentUser._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(updatedData),
       });
       const data = await res.json();
       if (data.success === false) {
