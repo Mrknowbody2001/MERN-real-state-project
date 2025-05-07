@@ -1,4 +1,5 @@
 const Listing = require("../model/listingModel");
+const errorHandler = require("../utils/errorHandler");
 
 module.exports.createListing = async (req, res, next) => {
   try {
@@ -46,6 +47,18 @@ module.exports.updateListing = async (req, res, next) => {
     );
 
     res.status(200).json(updatedListing);
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports.getListing = async (req, res, next) => {
+  try {
+    const listings = await Listing.findById(req.params.id);
+    if (!listings ){
+      return next(errorHandler(404, "Listing not found"));
+    }
+    res.status(200).json(listings);
   } catch (error) {
     next(error);
   }

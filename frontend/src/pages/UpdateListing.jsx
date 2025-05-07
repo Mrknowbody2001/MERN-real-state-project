@@ -4,15 +4,15 @@ import {
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
-import React, { useRef, useState } from "react";
+import React, { use, useEffect, useRef, useState } from "react";
 import { app } from "../fireBase.js";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import Profile from "./Profile.jsx";
+import { data, useNavigate, useParams } from "react-router-dom";
 
-const CreateListing = () => {
+const UpdateListing = () => {
   //!
   const navigate = useNavigate();
+  const params = useParams();
   const { currentUser } = useSelector((state) => state.user);
   const [files, setFiles] = useState([]);
   const [formData, setFormData] = useState({
@@ -33,9 +33,26 @@ const CreateListing = () => {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+
   //!
-  console.log(files);
-  console.log(formData);
+  // console.log(files);
+  // console.log(formData);
+  //!
+  useEffect(() => {
+    const fetchListing = async () => {
+      const listingId = params.listingId;
+      console.log(listingId);
+      const res = await fetch(`/api/listing/get/${listingId}`);
+      const data = await res.json();
+      if (data.success === false) {
+        console.log(data.message);
+        return;
+      }
+
+      setFormData(data);
+    };
+    fetchListing(); //
+  }, [params.listingId]);
   //!
   const handleImageSubmit = (e) => {
     if (files.length > 0 && files.length + formData.imageUrls.length < 7) {
@@ -137,8 +154,8 @@ const CreateListing = () => {
       //
       setLoading(true);
       setError(false); //remove previous error message
-      const res = await fetch("/api/listing/create", {
-        method: "POST",
+      const res = await fetch(`/api/listing/update/${params.listingId}`, {
+        method: "put",
         headers: {
           "Content-Type": "application/json",
         },
@@ -151,10 +168,8 @@ const CreateListing = () => {
       setLoading(false);
       if (data.success === false) {
         setError(data.message);
-      }else{
-        navigate(`/listing/${data._id}`);
       }
-     
+      navigate(`/listing/${data._id}`);
     } catch (error) {
       setError(error.message);
       setLoading(false);
@@ -163,7 +178,7 @@ const CreateListing = () => {
   return (
     <main className="p-3 max-w-4xl mx-auto">
       <h1 className=" text-3xl font-semibold text-center my-7">
-        Create a Listing
+        Update a Listing
       </h1>
       <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4">
         <div className=" flex flex-col gap-4 flex-1">
@@ -199,7 +214,7 @@ const CreateListing = () => {
           <div className="flex  gap-6 flex-wrap">
             <div className="flex gap-2">
               <input
-                type="radio"
+                type="checkbox"
                 id="sale"
                 className="w-5"
                 onChange={handleChange}
@@ -209,7 +224,7 @@ const CreateListing = () => {
             </div>
             <div className="flex gap-2">
               <input
-                type="radio"
+                type="checkbox"
                 id="rent"
                 className="w-5"
                 onChange={handleChange}
@@ -327,7 +342,7 @@ const CreateListing = () => {
               id="images"
               accept="image/*"
               multiple
-              
+              required
             />
             <button
               type="button"
@@ -362,7 +377,7 @@ const CreateListing = () => {
             disabled={loading || uploading}
             className="mt-2 p-3 border border-black bg-gray-500 text-white uppercase rounded-lg hover:shadow-lg disabled:opacity-80"
           >
-            {loading ? "Creating ..." : "Create Listing"}
+            {loading ? "Updating  ..." : "Update Listing"}
           </button>
           {error && (
             <>
@@ -376,4 +391,4 @@ const CreateListing = () => {
   );
 };
 
-export default CreateListing;
+export default UpdateListing;
