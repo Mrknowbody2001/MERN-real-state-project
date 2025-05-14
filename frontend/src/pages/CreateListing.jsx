@@ -45,19 +45,35 @@ const CreateListing = () => {
       for (let i = 0; i < files.length; i++) {
         promises.push(storeImage(files[i]));
       }
-      Promise.all(promises)
-        .then((urls) => {
-          setFormData({
-            ...formData,
-            imageUrls: formData.imageUrls.concat(urls),
-          });
-          setImageUploadError(false);
-          setUploading(false);
-        })
-        .catch((error) => {
-          setImageUploadError("image upload failed");
-          setUploading(false);
-        });
+      // Promise.all(promises)
+      //   .then((urls) => {
+      //     setFormData({
+      //       ...formData,
+      //       imageUrls: formData.imageUrls.concat(urls),
+      //     });
+      //     setImageUploadError(false);
+      //     setUploading(false);
+      //   })
+      //   .catch((error) => {
+      //     setImageUploadError("image upload failed");
+      //     setUploading(false);
+      //   });
+      Promise.allSettled(promises).then((results) => {
+        const urls = results
+          .filter((result) => result.status === "fulfilled")
+          .map((result) => result.value);
+
+        setFormData((prev) => ({
+          ...prev,
+          imageUrls: prev.imageUrls.concat(urls),
+        }));
+
+        if (urls.length !== files.length) {
+          setImageUploadError("Some images failed to upload");
+        }
+
+        setUploading(false);
+      });
     } else {
       setImageUploadError("you can only upload 6 images");
       setUploading(false);
@@ -151,10 +167,9 @@ const CreateListing = () => {
       setLoading(false);
       if (data.success === false) {
         setError(data.message);
-      }else{
+      } else {
         navigate(`/listing/${data._id}`);
       }
-     
     } catch (error) {
       setError(error.message);
       setLoading(false);
@@ -327,7 +342,6 @@ const CreateListing = () => {
               id="images"
               accept="image/*"
               multiple
-              
             />
             <button
               type="button"

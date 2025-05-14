@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+import "swiper/css/bundle";
+import { register } from "swiper/element/bundle";
+register();
 
 const Listing = () => {
   const [listing, setListing] = useState(null);
@@ -34,6 +39,26 @@ const Listing = () => {
       {loading && <p className="text-center my-7 text-2xl"> loading...</p>}
       {error && (
         <p className="text-center my-7 text-2xl"> Something went wrong...</p>
+      )}
+      {listing && !loading && !error && (
+        <div>
+          <Swiper navigation modules={[Navigation]} className="w-full">
+            {listing.imageUrls.map((url, index) => (
+              <SwiperSlide key={index}>
+                <div
+                  className="w-full"
+                  style={{
+                    backgroundImage: `url(${url})`,
+                    backgroundPosition: "center",
+                    backgroundRepeat: "no-repeat",
+                    backgroundSize: "cover",
+                    height: "500px",
+                  }}
+                ></div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
       )}
     </main>
   );
