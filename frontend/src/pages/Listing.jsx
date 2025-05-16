@@ -13,11 +13,15 @@ import {
   FaParking,
   FaChair,
 } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import Contact from "../components/Contact";
 
 const Listing = () => {
   const [listing, setListing] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const currentUser = useSelector((state) => state.user.currentUser);
+  const [contact, setContact] = useState(false);
   //
   const params = useParams();
   useEffect(() => {
@@ -41,7 +45,7 @@ const Listing = () => {
     };
     fetchData();
   }, [params.listingId]);
-
+  console.log(currentUser);
   return (
     <main>
       {loading && <p className="text-center my-7 text-2xl"> loading...</p>}
@@ -114,6 +118,16 @@ const Listing = () => {
                 {listing.furnished ? "Furnished" : "Unfurnished"}
               </li>
             </ul>
+
+            {currentUser && listing.userRef !== currentUser._id && !contact && (
+              <button
+                onClick={() => setContact(true)}
+                className="bg-slate-600 text-white px-3 py-2 mt-2 uppercase hover:opacity-95 rounded-lg"
+              >
+                Contact Landlord
+              </button>
+            )}
+            {contact && <Contact listing={listing} />}
           </div>
         </div>
       )}

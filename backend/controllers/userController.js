@@ -57,3 +57,15 @@ module.exports.getUserListings = async (req, res, next) => {
     return next(errorHandler(403, "You can delete only your account"));
   }
 };
+
+//! get user
+module.exports.getUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) return next(errorHandler(404, "User not found"));
+    const { password, ...rest } = user._doc;
+    res.status(200).json(rest);
+  } catch (error) {
+    next(error);
+  }
+};

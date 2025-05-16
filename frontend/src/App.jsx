@@ -9,7 +9,7 @@ import Header from "./components/Header";
 import PrivateRoute from "./components/privateRoute";
 import CreateListing from "./pages/CreateListing";
 import UpdateListing from "./pages/UpdateListing";
-import Listing from "./pages/Listing";
+import Listing from "./pages/listing";
 const App = () => {
   return (
     <BrowserRouter>
