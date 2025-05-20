@@ -1,12 +1,12 @@
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import { use } from "react";
+
 import { Link } from "react-router-dom";
 
 const Contact = ({ listing }) => {
   //
-  const [Landlord, setLandlord] = useState(null);
+  const [landlord, setLandlord] = useState(null);
   const [message, setMessage] = useState("");
   //
   const onchange = (e) => {
@@ -29,10 +29,10 @@ const Contact = ({ listing }) => {
   return (
     <>
       s
-      {Landlord && (
+      {landlord && (
         <div className="flex flex-col gap-2">
           <p>
-            Contact <span className="font-semibold">{Landlord.name}</span>for
+            Contact <span className="font-semibold">{landlord.name}</span>for
             <span className="font-semibold">{listing.name.toLowerCase()}</span>
           </p>
           <textarea
@@ -51,10 +51,10 @@ const Contact = ({ listing }) => {
             Send a message
           </Link> */}
           <a
-            href={`mailto:${Landlord.email}?subject=${encodeURIComponent(
-              "Regarding " + listing.name
+            href={`mailto:${landlord.email}?subject=${encodeURIComponent(
+              "Regarding  " + listing.name
             )}&body=${encodeURIComponent(message)}`}
-            className="bg-slate-600 text-white text-center p-3 rounded-lg hover:opacity-95"
+            className="bg-slate-600 text-whiste text-center p-3 rounded-lg hover:opacity-95"
           >
             Send a message
           </a>

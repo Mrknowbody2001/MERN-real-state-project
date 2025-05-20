@@ -51,7 +51,7 @@ module.exports.updateListing = async (req, res, next) => {
     next(error);
   }
 };
-
+//! get listing
 module.exports.getListing = async (req, res, next) => {
   try {
     const listings = await Listing.findById(req.params.id);
