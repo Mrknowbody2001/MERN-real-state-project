@@ -97,7 +97,7 @@ module.exports.getListings = async (req, res, next) => {
 
     const listings = await Listing.find({
       name: {
-        $regex: searchTerm,
+        $regex: searchTerm,//search  any thing - word or letter doesnt care
         $options: "i", // doesn't cara about lower or uppercase
       },
       offer,
